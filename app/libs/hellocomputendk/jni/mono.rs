@@ -15,7 +15,7 @@
  */
 
 #pragma version(1)
-#pragma rs java_package_name(com.yingnanwang.cmakerstest4.TFRSInterface)
+#pragma rs java_package_name(com.foo.bar)
 
 const static float3 gMonoMult = {0.299f, 0.587f, 0.114f};
 
