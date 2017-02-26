@@ -1,0 +1,55 @@
+apply plugin: 'com.android.application'
+
+def ndk_build_root = android.ndkDirectory.toString() + '/ndk-build'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.yingnanwang.cmakerstest4"
+        minSdkVersion 23
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters 'x86', 'armeabi-v7a'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            jni.srcDirs = []
+            jniLibs.srcDirs = ['./libs/hellocomputendk/obj/local']
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    testCompile 'junit:junit:4.12'
+}
+
+task buildNative(type:Exec, description: "Task to run ndk-build") {
+    workingDir './libs/hellocomputendk'
+    commandLine ndk_build_root, '-B'
+}
+tasks.withType(JavaCompile) {
+    compileTask -> compileTask.dependsOn buildNative
+}
+clean {
+    delete './libs/hellocomputendk/libs'
+    delete './libs/hellocomputendk/obj'
+}
+
+
