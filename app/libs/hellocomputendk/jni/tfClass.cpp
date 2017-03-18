@@ -7,14 +7,14 @@
 
 void launchMono(sp<Allocation> inputAlloc, sp<Allocation> outputAlloc, sp<RS> rs)
 {
-	LOGI("Step1");
 	ScriptC_mono* sc = new ScriptC_mono(rs);
-	LOGI("Step2");
-	sc->forEach_root(inputAlloc, outputAlloc);
-	LOGI("Step3");
+
+    sc->invoke_test();
+	sc->forEach_myroot(inputAlloc, outputAlloc);
+
 	delete sc;
-	LOGI("Step4");
 }
+
 
 void compute(const char * path, int X, int Y, void* inputPtr, void*& outputPtr)
 {
